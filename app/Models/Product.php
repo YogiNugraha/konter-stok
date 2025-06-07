@@ -24,4 +24,14 @@ class Product extends Model
         'selling_price',
         'stock',
     ];
+
+    public function stockIns()
+    {
+        return $this->hasMany(StockIn::class);
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
 }

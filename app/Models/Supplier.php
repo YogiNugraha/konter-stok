@@ -19,4 +19,9 @@ class Supplier extends Model
         'phone',
         'address',
     ];
+
+    public function stockIns()
+    {
+        return $this->hasMany(StockIn::class);
+    }
 }

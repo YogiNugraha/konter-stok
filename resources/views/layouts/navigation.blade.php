@@ -21,6 +21,15 @@
                     <x-nav-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
                         {{ __('Supplier') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('stock-in.create')" :active="request()->routeIs('stock-in.create')">
+                        {{ __('Stok Masuk') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
+                        {{ __('Penjualan / POS') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('reports.sales')" :active="request()->routeIs('reports.sales')">
+                        {{ __('Laporan Penjualan') }}
+                    </x-nav-link>
                 </div>
             </div>
 
