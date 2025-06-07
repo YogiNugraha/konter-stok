@@ -15,21 +15,29 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
-                        {{ __('Produk') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
-                        {{ __('Supplier') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('stock-in.create')" :active="request()->routeIs('stock-in.create')">
-                        {{ __('Stok Masuk') }}
-                    </x-nav-link>
+                    {{-- BUNGKUS MENU ADMIN DENGAN @can --}}
+                    @can('is-admin')
+                        <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                            {{ __('Produk') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
+                            {{ __('Supplier') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('stock-in.create')" :active="request()->routeIs('stock-in.create')">
+                            {{ __('Stok Masuk') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('reports.sales')" :active="request()->routeIs('reports.sales')">
+                            {{ __('Laporan Penjualan') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('reports.profit')" :active="request()->routeIs('reports.profit')">
+                            {{ __('Laporan Laba/Rugi') }}
+                        </x-nav-link>
+                    @endcan
+                    {{-- Link Penjualan bisa diakses semua role, jadi biarkan di luar --}}
                     <x-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
                         {{ __('Penjualan / POS') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('reports.sales')" :active="request()->routeIs('reports.sales')">
-                        {{ __('Laporan Penjualan') }}
-                    </x-nav-link>
+
                 </div>
             </div>
 
@@ -92,6 +100,28 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            {{-- BUNGKUS MENU ADMIN DENGAN @can --}}
+            @can('is-admin')
+                <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                    {{ __('Produk') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
+                    {{ __('Supplier') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('stock-in.create')" :active="request()->routeIs('stock-in.create')">
+                    {{ __('Stok Masuk') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('reports.sales')" :active="request()->routeIs('reports.sales')">
+                    {{ __('Laporan Penjualan') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('reports.profit')" :active="request()->routeIs('reports.profit')">
+                    {{ __('Laporan Laba/Rugi') }}
+                </x-responsive-nav-link>
+            @endcan
+            {{-- Link Penjualan bisa diakses semua role, jadi biarkan di luar --}}
+            <x-responsive-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
+                {{ __('Penjualan / POS') }}
             </x-responsive-nav-link>
         </div>
 

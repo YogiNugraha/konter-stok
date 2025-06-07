@@ -34,10 +34,18 @@
                             </select>
                         </div>
 
-                        <div class="mb-4">
+                        {{-- <div class="mb-4">
                             <label for="quantity" class="block text-sm font-medium text-gray-700">Jumlah Masuk</label>
                             <input type="number" name="quantity" id="quantity"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required min="1">
+                        </div> --}}
+
+                        {{-- GANTI INPUT QUANTITY DENGAN INI --}}
+                        <div class="mb-4">
+                            <label for="imeis" class="block text-sm font-medium text-gray-700">Daftar IMEI (Satu per
+                                baris)</label>
+                            <textarea name="imeis" id="imeis" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                required>{{ old('imeis') }}</textarea>
                         </div>
 
                         <div class="mb-4">
