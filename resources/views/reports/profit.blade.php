@@ -45,6 +45,10 @@
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                     Filter
                                 </button>
+                                <a href="{{ route('reports.sales.exportExcel', request()->query()) }}"
+                                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                    Export ke Excel
+                                </a>
                             </div>
                         </div>
                     </form>
@@ -54,29 +58,46 @@
                         <table class="min-w-full leading-normal">
                             <thead>
                                 <tr>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Tanggal
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Tanggal
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Produk
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Produk
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Kasir
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Kasir
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Jumlah
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Jumlah
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Harga
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Harga
                                         Jual</th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         Modal/Unit</th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Omzet
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Omzet
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Laba</th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Aksi</th>
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Laba</th>
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($sales as $sale)
                                     {{-- Tambahkan class bersyarat untuk membedakan baris retur --}}
                                     <tr
-                                        class="{{ $sale->status === 'returned' ? 'bg-gray-100 text-gray-500 italic' : '' }}">
+                                        class="{{ $sale->status === 'returned' ? 'bg-red-100 text-red-500 italic' : '' }}">
                                         <td class="px-5 py-5 border-b border-gray-200 text-sm">
                                             {{ $sale->created_at->format('d M Y, H:i') }}</td>
 
@@ -146,17 +167,17 @@
                             </tbody>
                             <tfoot>
                                 <tr class="text-right">
-                                    <td colspan="8" class="px-5 py-2 border-t-2 font-semibold">Total Omzet
+                                    <td colspan="7" class="px-5 py-2 border-t-2 font-semibold">Total Omzet
                                         (Pendapatan Kotor)</td>
                                     <td class="px-5 py-2 border-t-2 font-semibold">Rp
                                         {{ number_format($totalRevenue) }}</td>
                                 </tr>
                                 <tr class="text-right">
-                                    <td colspan="8" class="px-5 py-2 font-semibold">Total Modal (HPP)</td>
+                                    <td colspan="7" class="px-5 py-2 font-semibold">Total Modal (HPP)</td>
                                     <td class="px-5 py-2 font-semibold">Rp {{ number_format($totalCapital) }}</td>
                                 </tr>
                                 <tr class="text-right bg-gray-200">
-                                    <td colspan="8" class="px-5 py-3 font-bold text-lg">TOTAL LABA BERSIH</td>
+                                    <td colspan="7" class="px-5 py-3 font-bold text-lg">TOTAL LABA BERSIH</td>
                                     <td class="px-5 py-3 font-bold text-lg text-green-700">Rp
                                         {{ number_format($totalProfit) }}</td>
                                 </tr>

@@ -15,8 +15,7 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    {{-- BUNGKUS MENU ADMIN DENGAN @can --}}
-                    @can('is-admin')
+                    @can('manage-inventory')
                         <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
                             {{ __('Produk') }}
                         </x-nav-link>
@@ -26,6 +25,9 @@
                         <x-nav-link :href="route('stock-in.create')" :active="request()->routeIs('stock-in.create')">
                             {{ __('Stok Masuk') }}
                         </x-nav-link>
+                    @endcan
+                    {{-- BUNGKUS MENU ADMIN DENGAN @can --}}
+                    @can('is-admin')
                         <x-nav-link :href="route('reports.sales')" :active="request()->routeIs('reports.sales')">
                             {{ __('Laporan Penjualan') }}
                         </x-nav-link>
@@ -101,8 +103,7 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            {{-- BUNGKUS MENU ADMIN DENGAN @can --}}
-            @can('is-admin')
+            @can('manage-inventory')
                 <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
                     {{ __('Produk') }}
                 </x-responsive-nav-link>
@@ -112,6 +113,9 @@
                 <x-responsive-nav-link :href="route('stock-in.create')" :active="request()->routeIs('stock-in.create')">
                     {{ __('Stok Masuk') }}
                 </x-responsive-nav-link>
+            @endcan
+            {{-- BUNGKUS MENU ADMIN DENGAN @can --}}
+            @can('is-admin')
                 <x-responsive-nav-link :href="route('reports.sales')" :active="request()->routeIs('reports.sales')">
                     {{ __('Laporan Penjualan') }}
                 </x-responsive-nav-link>

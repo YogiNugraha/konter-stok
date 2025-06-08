@@ -54,25 +54,39 @@
                         <table class="min-w-full leading-normal">
                             <thead>
                                 <tr>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Tanggal
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Tanggal
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Produk
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Produk
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Kasir
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Kasir
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Jumlah
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Jumlah
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Harga
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Harga
                                         Satuan</th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Total
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Total
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Aksi</th>
+                                    <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($sales as $sale)
                                     <tr
-                                        class="{{ $sale->status === 'returned' ? 'bg-gray-100 text-gray-500 italic' : '' }}">
+                                        class="{{ $sale->status === 'returned' ? 'bg-red-100 text-red-500 italic' : '' }}">
                                         <td class="px-5 py-5 border-b text-sm">
                                             {{ $sale->created_at->format('d M Y, H:i') }}</td>
                                         <td class="px-5 py-5 border-b text-sm">{{ $sale->product->name }}</td>

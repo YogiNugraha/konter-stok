@@ -26,5 +26,10 @@ class AuthServiceProvider extends ServiceProvider
     Gate::define('is-admin', function ($user) {
       return $user->role == 'admin';
     });
+
+    Gate::define('manage-inventory', function ($user) {
+      // Berikan izin jika rolenya adalah 'admin' ATAU 'kasir'
+      return in_array($user->role, ['admin', 'kasir']);
+    });
   }
 }

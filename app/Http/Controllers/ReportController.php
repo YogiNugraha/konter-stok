@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Sale;
+use App\Exports\SalesExport;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -67,5 +69,18 @@ class ReportController extends Controller
             'startDate',
             'endDate'
         ));
+    }
+
+    public function exportSalesExcel(Request $request)
+    {
+        // Ambil filter tanggal dari URL, sama seperti di laporan biasa
+        $startDate = Carbon::parse($request->input('start_date', Carbon::now()->startOfMonth()))->startOfDay();
+        $endDate = Carbon::parse($request->input('end_date', Carbon::now()))->endOfDay();
+
+        // Siapkan nama file
+        $fileName = 'laporan-penjualan-' . $startDate->format('d-m-Y') . '-' . $endDate->format('d-m-Y') . '.xlsx';
+
+        // Panggil class SalesExport dan trigger download
+        return Excel::download(new SalesExport($startDate, $endDate), $fileName);
     }
 }

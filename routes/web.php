@@ -88,22 +88,31 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
 });
 
+// Rute yang bisa diakses oleh role 'manage-inventory'
+Route::middleware(['auth', 'verified', 'can:manage-inventory'])->group(
+    function () {
+        // Route Product
+        Route::resource('products', ProductController::class);
+        Route::get('/products/{product}/items', [ProductController::class, 'showItems'])->name('products.showItems');
+        //Route Suppliers
+        Route::resource('suppliers', SupplierController::class);
+        // Rute untuk Stok Masuk
+        Route::get('/stock-in/create', [StockInController::class, 'create'])->name('stock-in.create');
+        Route::post('/stock-in', [StockInController::class, 'store'])->name('stock-in.store');
+    }
+);
+
 // Rute yang HANYA bisa diakses oleh ADMIN
 Route::middleware(['auth', 'verified', 'is-admin'])->group(function () {
-    // Route Product
-    Route::resource('products', ProductController::class);
-    Route::get('/products/{product}/items', [ProductController::class, 'showItems'])->name('products.showItems');
-    //Route Suppliers
-    Route::resource('suppliers', SupplierController::class);
-    // Rute untuk Stok Masuk
-    Route::get('/stock-in/create', [StockInController::class, 'create'])->name('stock-in.create');
-    Route::post('/stock-in', [StockInController::class, 'store'])->name('stock-in.store');
 
     // Rute untuk Laporan
     Route::get('/reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
     Route::get('/reports/profit', [ReportController::class, 'profit'])->name('reports.profit'); // <-- TAMBAHKAN INI
 
     Route::post('/sales/{sale}/return', [SaleController::class, 'processReturn'])->name('sales.return');
+
+    // export excel
+    Route::get('/reports/sales/export-excel', [ReportController::class, 'exportSalesExcel'])->name('reports.sales.exportExcel');
 });
 
 Route::get('/api/products/{product}/available-imeis', function (Product $product) {
