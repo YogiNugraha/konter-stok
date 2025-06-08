@@ -30,6 +30,14 @@
                 </div>
             </div>
 
+            {{-- ===== WADAH UNTUK GRAFIK BARU DIMULAI DI SINI ===== --}}
+            <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    {!! $chart->container() !!}
+                </div>
+            </div>
+            {{-- ===== WADAH UNTUK GRAFIK SELESAI DI SINI ===== --}}
+
             <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-lg font-semibold mb-4">Produk dengan Stok Hampir Habis (Kurang dari 5)</h3>
@@ -64,4 +72,9 @@
 
         </div>
     </div>
+
+    {{-- ===== SKRIP UNTUK GRAFIK DIMULAI DI SINI ===== --}}
+    <script src="{{ $chart->cdn() }}"></script>
+    {!! $chart->script() !!}
+    {{-- ===== SKRIP UNTUK GRAFIK SELESAI DI SINI ===== --}}
 </x-app-layout>

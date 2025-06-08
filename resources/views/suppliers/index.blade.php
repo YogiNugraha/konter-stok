@@ -18,6 +18,19 @@
                         </div>
                     @endif
 
+                    {{-- ===== FORM PENCARIAN DIMULAI DI SINI ===== --}}
+                    <div class="mb-4">
+                        <form action="{{ route('suppliers.index') }}" method="GET" class="flex items-center">
+                            <input type="text" name="search" placeholder="Cari nama atau kontak supplier..."
+                                class="w-full md:w-1/3 rounded-md border-gray-300 shadow-sm"
+                                value="{{ request('search') }}">
+                            <button type="submit"
+                                class="ml-2 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                                Cari
+                            </button>
+                        </form>
+                    </div>
+                    {{-- ===== FORM PENCARIAN SELESAI ===== --}}
                     <a href="{{ route('suppliers.create') }}"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         + Tambah Supplier
@@ -92,7 +105,10 @@
                             @endforelse
                         </tbody>
                     </table>
-
+                    {{-- ===== TAMBAHKAN LINK PAGINASI DI SINI ===== --}}
+                    <div class="mt-4">
+                        {{ $suppliers->appends(request()->query())->links() }}
+                    </div>
                 </div>
             </div>
         </div>
