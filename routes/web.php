@@ -73,6 +73,8 @@ Route::middleware(['auth', 'verified', 'is-admin'])->group(function () {
     // Rute untuk Laporan
     Route::get('/reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
     Route::get('/reports/profit', [ReportController::class, 'profit'])->name('reports.profit'); // <-- TAMBAHKAN INI
+
+    Route::post('/sales/{sale}/return', [SaleController::class, 'processReturn'])->name('sales.return');
 });
 
 Route::get('/api/products/{product}/available-imeis', function (Product $product) {

@@ -51,16 +51,68 @@ class StockInController extends Controller
     //     }
     // }
 
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'product_id' => 'required|exists:products,id',
+    //         'supplier_id' => 'required|exists:suppliers,id',
+    //         'imeis' => 'required|string', // Validasi dasar untuk textarea
+    //         'date' => 'required|date',
+    //     ]);
+
+    //     // Pecah textarea menjadi array, hapus baris kosong dan duplikat
+    //     $imeis = array_filter(array_unique(explode("\n", str_replace("\r", "", $request->imeis))));
+
+    //     if (empty($imeis)) {
+    //         return redirect()->back()->with('error', 'Daftar IMEI tidak boleh kosong.')->withInput();
+    //     }
+
+    //     try {
+    //         DB::transaction(function () use ($request, $imeis) {
+    //             $quantity = count($imeis); // Jumlah stok masuk adalah sebanyak jumlah IMEI
+
+    //             // Buat catatan di tabel stock_ins (seperti biasa)
+    //             StockIn::create([
+    //                 'product_id' => $request->product_id,
+    //                 'supplier_id' => $request->supplier_id,
+    //                 'quantity' => $quantity, // Simpan jumlahnya
+    //                 'date' => $request->date,
+    //             ]);
+
+    //             // Buat setiap item produk dengan IMEI-nya
+    //             foreach ($imeis as $imei) {
+    //                 ProductItem::create([
+    //                     'product_id' => $request->product_id,
+    //                     'imei' => trim($imei),
+    //                 ]);
+    //             }
+
+    //             // Update (increment) stok di tabel products
+    //             $product = Product::find($request->product_id);
+    //             $product->increment('stock', $quantity);
+    //         });
+
+    //         return redirect()->route('products.index')
+    //             ->with('success', count($imeis) . ' unit produk berhasil ditambahkan!');
+    //     } catch (\Exception $e) {
+    //         // Cek jika error karena duplikat IMEI
+    //         if (str_contains($e->getMessage(), 'Duplicate entry')) {
+    //             return redirect()->back()->with('error', 'Terjadi kesalahan: Salah satu IMEI yang Anda masukkan sudah ada di database.')->withInput();
+    //         }
+    //         return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage())->withInput();
+    //     }
+    // }
+
     public function store(Request $request)
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            'imeis' => 'required|string', // Validasi dasar untuk textarea
+            'purchase_price' => 'required|integer|min:0', // <-- Validasi baru
+            'imeis' => 'required|string',
             'date' => 'required|date',
         ]);
 
-        // Pecah textarea menjadi array, hapus baris kosong dan duplikat
         $imeis = array_filter(array_unique(explode("\n", str_replace("\r", "", $request->imeis))));
 
         if (empty($imeis)) {
@@ -69,33 +121,34 @@ class StockInController extends Controller
 
         try {
             DB::transaction(function () use ($request, $imeis) {
-                $quantity = count($imeis); // Jumlah stok masuk adalah sebanyak jumlah IMEI
+                $quantity = count($imeis);
 
-                // Buat catatan di tabel stock_ins (seperti biasa)
                 StockIn::create([
                     'product_id' => $request->product_id,
                     'supplier_id' => $request->supplier_id,
-                    'quantity' => $quantity, // Simpan jumlahnya
+                    'quantity' => $quantity,
                     'date' => $request->date,
                 ]);
 
-                // Buat setiap item produk dengan IMEI-nya
+                // Buat setiap item produk DENGAN HARGA BELINYA
                 foreach ($imeis as $imei) {
                     ProductItem::create([
                         'product_id' => $request->product_id,
                         'imei' => trim($imei),
+                        'purchase_price' => $request->purchase_price, // <-- Simpan harga beli
                     ]);
                 }
 
-                // Update (increment) stok di tabel products
                 $product = Product::find($request->product_id);
                 $product->increment('stock', $quantity);
+
+                // (Opsional) Update harga beli standar di tabel produk ke harga terbaru
+                $product->update(['purchase_price' => $request->purchase_price]);
             });
 
             return redirect()->route('products.index')
                 ->with('success', count($imeis) . ' unit produk berhasil ditambahkan!');
         } catch (\Exception $e) {
-            // Cek jika error karena duplikat IMEI
             if (str_contains($e->getMessage(), 'Duplicate entry')) {
                 return redirect()->back()->with('error', 'Terjadi kesalahan: Salah satu IMEI yang Anda masukkan sudah ada di database.')->withInput();
             }

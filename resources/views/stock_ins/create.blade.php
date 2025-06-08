@@ -34,11 +34,13 @@
                             </select>
                         </div>
 
-                        {{-- <div class="mb-4">
-                            <label for="quantity" class="block text-sm font-medium text-gray-700">Jumlah Masuk</label>
-                            <input type="number" name="quantity" id="quantity"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required min="1">
-                        </div> --}}
+                        <div class="mb-4">
+                            <label for="purchase_price" class="block text-sm font-medium text-gray-700">Harga Beli per
+                                Unit (Modal)</label>
+                            <input type="number" name="purchase_price" id="purchase_price"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required min="0"
+                                value="{{ old('purchase_price') }}">
+                        </div>
 
                         {{-- GANTI INPUT QUANTITY DENGAN INI --}}
                         <div class="mb-4">

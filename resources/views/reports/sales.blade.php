@@ -9,6 +9,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    {{-- Tampilkan pesan sukses atau error --}}
+                    @if (session('success'))
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                            role="alert">
+                            <span class="block sm:inline">{{ session('success') }}</span>
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+                            role="alert">
+                            <span class="block sm:inline">{{ session('error') }}</span>
+                        </div>
+                    @endif
 
                     {{-- Form Filter Tanggal --}}
                     <form method="GET" action="{{ route('reports.sales') }}" class="mb-6">
@@ -53,11 +66,13 @@
                                         Satuan</th>
                                     <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Total
                                     </th>
+                                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($sales as $sale)
-                                    <tr>
+                                    <tr
+                                        class="{{ $sale->status === 'returned' ? 'bg-gray-100 text-gray-500 italic' : '' }}">
                                         <td class="px-5 py-5 border-b text-sm">
                                             {{ $sale->created_at->format('d M Y, H:i') }}</td>
                                         <td class="px-5 py-5 border-b text-sm">{{ $sale->product->name }}</td>
@@ -67,6 +82,21 @@
                                             {{ number_format($sale->price_at_time) }}</td>
                                         <td class="px-5 py-5 border-b text-sm">Rp
                                             {{ number_format($sale->quantity * $sale->price_at_time) }}</td>
+                                        <td class="px-5 py-5 border-b text-sm">
+                                            {{-- Tombol Retur hanya muncul jika statusnya 'completed' & ini data baru --}}
+                                            @if ($sale->status === 'completed' && $sale->productItem)
+                                                <form action="{{ route('sales.return', $sale->id) }}" method="POST"
+                                                    onsubmit="return confirm('Anda yakin ingin memproses retur untuk transaksi ini? Stok akan dikembalikan.');">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="text-sm text-yellow-600 hover:text-yellow-900">
+                                                        Retur
+                                                    </button>
+                                                </form>
+                                            @elseif ($sale->status === 'returned')
+                                                <span class="text-sm text-gray-500 italic">Sudah Diretur</span>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>

@@ -33,10 +33,15 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
                                 <option value="">Pilih Produk</option>
                                 @foreach ($products as $product)
-                                    <option value="{{ $product->id }}"
+                                    {{-- <option value="{{ $product->id }}"
                                         {{ old('product_id') == $product->id ? 'selected' : '' }}>
                                         {{ $product->name }} (Stok: {{ $product->stock }}) - Rp
                                         {{ number_format($product->selling_price) }}
+                                    </option> --}}
+                                    {{-- Tambahkan atribut data-price di dalam tag option --}}
+                                    <option value="{{ $product->id }}" data-price="{{ $product->selling_price }}"
+                                        {{ old('product_id') == $product->id ? 'selected' : '' }}>
+                                        {{ $product->name }} (Stok: {{ $product->stock }})
                                     </option>
                                 @endforeach
                             </select>
@@ -50,6 +55,14 @@
                                 <option value="">-- Pilih Produk Terlebih Dahulu --</option>
                             </select>
                         </div>
+                        {{-- ===== TAMBAHKAN BLOK INPUT BARU DI SINI ===== --}}
+                        <div class="mb-4">
+                            <label for="selling_price" class="block text-sm font-medium text-gray-700">Harga Jual
+                                (Rp)</label>
+                            <input type="number" name="selling_price" id="selling_price"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required min="0"
+                                value="{{ old('selling_price') }}">
+                        </div>
 
                         {{-- <div class="mb-4">
                             <label for="quantity" class="block text-sm font-medium text-gray-700">Jumlah Jual</label>
@@ -60,7 +73,7 @@
 
                         <div class="flex items-center justify-end mt-4">
                             <button type="submit"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                                 Simpan Penjualan
                             </button>
                         </div>
@@ -74,6 +87,12 @@
         document.getElementById('product_id').addEventListener('change', function() {
             const productId = this.value;
             const imeiSelect = document.getElementById('imei');
+            const priceInput = document.getElementById('selling_price');
+
+            // Ambil harga dari atribut data-price
+            const selectedOption = this.options[this.selectedIndex];
+            const price = selectedOption.dataset.price;
+            priceInput.value = price; // <-- Atur nilai input harga
 
             // Kosongkan pilihan IMEI dan tampilkan pesan loading
             imeiSelect.innerHTML = '<option value="">Memuat IMEI...</option>';
@@ -99,6 +118,7 @@
                     });
             } else {
                 imeiSelect.innerHTML = '<option value="">-- Pilih Produk Terlebih Dahulu --</option>';
+                priceInput.value = ''; // <-- Kosongkan harga jika tidak ada produk dipilih
             }
         });
     </script>
