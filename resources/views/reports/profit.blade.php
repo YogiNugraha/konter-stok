@@ -169,16 +169,17 @@
                                 <tr class="text-right">
                                     <td colspan="7" class="px-5 py-2 border-t-2 font-semibold">Total Omzet
                                         (Pendapatan Kotor)</td>
-                                    <td class="px-5 py-2 border-t-2 font-semibold">Rp
+                                    <td colspan="2" class="px-5 py-2 border-t-2 font-semibold text-left">Rp
                                         {{ number_format($totalRevenue) }}</td>
                                 </tr>
                                 <tr class="text-right">
                                     <td colspan="7" class="px-5 py-2 font-semibold">Total Modal (HPP)</td>
-                                    <td class="px-5 py-2 font-semibold">Rp {{ number_format($totalCapital) }}</td>
+                                    <td colspan="2" class="px-5 py-2 font-semibold text-left">Rp
+                                        {{ number_format($totalCapital) }}</td>
                                 </tr>
                                 <tr class="text-right bg-gray-200">
                                     <td colspan="7" class="px-5 py-3 font-bold text-lg">TOTAL LABA BERSIH</td>
-                                    <td class="px-5 py-3 font-bold text-lg text-green-700">Rp
+                                    <td colspan="2" class="px-5 py-3 font-bold text-lg text-green-700 text-left">Rp
                                         {{ number_format($totalProfit) }}</td>
                                 </tr>
                             </tfoot>

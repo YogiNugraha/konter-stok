@@ -120,10 +120,11 @@
                                 @endforelse
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <td colspan="5" class="px-5 py-5 border-t-2 text-right font-bold text-lg">TOTAL
+                                <tr class="text-right bg-gray-200">
+                                    <td colspan="5" class="px-5 py-5 border-t-2 text-right  font-bold text-lg">TOTAL
                                         OMZET</td>
-                                    <td class="px-5 py-5 border-t-2 font-bold text-lg">Rp
+                                    <td colspan="2"
+                                        class="px-5 py-5 border-t-2 text-green-700 font-bold text-lg text-left">Rp
                                         {{ number_format($totalRevenue) }}</td>
                                 </tr>
                             </tfoot>
