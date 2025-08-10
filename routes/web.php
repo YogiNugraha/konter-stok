@@ -4,9 +4,11 @@ use Carbon\Carbon;
 use App\Models\Sale;
 use App\Models\Product;
 use App\Models\ProductItem;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -18,7 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function (Request $request) {
     // --- Data untuk Stat Cards (ini tetap sama) ---
     $todaySales = Sale::whereDate('created_at', Carbon::today())->where('status', 'completed')->get();
     $revenueToday = $todaySales->sum(function ($sale) {
@@ -33,38 +35,70 @@ Route::get('/dashboard', function () {
     // --- LOGIKA BARU UNTUK MEMBUAT GRAFIK PENJUALAN 7 HARI TERAKHIR ---
     // =====================================================================
 
-    // 1. Ambil data penjualan 7 hari terakhir yang sudah selesai
+    // 1. Ambil rentang waktu dari URL, default-nya 7 hari
+    $range = $request->input('range', 7);
+    $labels = [];
+    $data = [];
+    $dateFormat = '';
+    $dateGroupFormat = '';
+    $subtitle = 'Total pendapatan penjualan per hari.';
+
+    if ($range == 365) {
+        // Logika untuk 1 TAHUN (dikelompokkan per bulan)
+        $dateGroupFormat = '%Y-%m';
+        $startDate = Carbon::now()->subMonths(11)->startOfMonth();
+        for ($i = 0; $i < 12; $i++) {
+            $date = $startDate->copy()->addMonths($i);
+            $labels[] = $date->format('M Y');
+        }
+        $subtitle = 'Total pendapatan penjualan per bulan.';
+    } else {
+        // Logika untuk 7 atau 30 HARI (dikelompokkan per hari)
+        $dateGroupFormat = '%Y-%m-%d';
+        $startDate = Carbon::now()->subDays($range - 1);
+        for ($i = 0; $i < $range; $i++) {
+            $date = $startDate->copy()->addDays($i);
+            $labels[] = $date->format('d M');
+        }
+    }
+
+    // 2. Ambil data penjualan sesuai rentang waktu & pengelompokan
     $salesData = Sale::select(
-        DB::raw('DATE(created_at) as date'),
+        DB::raw("DATE_FORMAT(created_at, '$dateGroupFormat') as date_group"),
         DB::raw('SUM(price_at_time * quantity) as total')
     )
         ->where('status', 'completed')
-        ->whereBetween('created_at', [Carbon::now()->subDays(6)->startOfDay(), Carbon::now()->endOfDay()])
-        ->groupBy('date')
-        ->orderBy('date', 'asc')
+        ->where('created_at', '>=', $startDate->startOfDay())
+        ->groupBy('date_group')
         ->get()
-        ->keyBy('date'); // `keyBy` untuk memudahkan pencarian berdasarkan tanggal
+        ->keyBy('date_group');
 
-    // 2. Siapkan array untuk label (7 hari terakhir) dan data (total penjualan)
-    $labels = [];
-    $data = [];
-    for ($i = 6; $i >= 0; $i--) {
-        $date = Carbon::now()->subDays($i);
-        $dateString = $date->format('Y-m-d');
-
-        // Tambahkan label tanggal (cth: "08 Jun")
-        array_push($labels, $date->format('d M'));
-
-        // Tambahkan data penjualan, jika tidak ada penjualan di hari itu, masukkan 0
-        array_push($data, $salesData[$dateString]->total ?? 0);
+    // 3. Siapkan data untuk grafik
+    foreach ($labels as $label) {
+        $dateKey = '';
+        if ($range == 365) {
+            // Konversi label "Aug 2025" menjadi "2025-08" untuk dicocokkan
+            $dateKey = Carbon::createFromFormat('M Y', $label)->format('Y-m');
+        } else {
+            // Konversi label "10 Aug" menjadi "2025-08-10"
+            $dateKey = Carbon::createFromFormat('d M', $label)->format('Y-m-d');
+        }
+        $data[] = $salesData[$dateKey]->total ?? 0;
     }
 
     // 3. Buat objek chart menggunakan Larapex
+    // 4. Buat objek chart dengan judul dinamis
     $chart = (new LarapexChart)->barChart()
-        ->setTitle('Pendapatan 7 Hari Terakhir')
-        ->setSubtitle('Total pendapatan penjualan per hari.')
+        ->setTitle('Pendapatan ' . ($range == 365 ? '1 Tahun' : $range . ' Hari') . ' Terakhir')
+        ->setSubtitle($subtitle)
         ->addData('Pendapatan', $data)
         ->setXAxis($labels);
+    // ->setColors(['#00aeef'])
+    // // ... sisa konfigurasi chart lainnya tetap sama ...
+    // ->setStroke(2)
+    // ->setDataLabels(true)
+    // ->setMarkers(['#FFFFFF'], 5, 8);
+    // Anda bisa tambahkan kembali setOption yaxis & annotations jika mau
 
     // Kirim semua data, TERMASUK $chart, ke view
     return view('dashboard', compact(
@@ -94,6 +128,7 @@ Route::middleware(['auth', 'verified', 'can:manage-inventory'])->group(
         // Route Product
         Route::resource('products', ProductController::class);
         Route::get('/products/{product}/items', [ProductController::class, 'showItems'])->name('products.showItems');
+        Route::delete('/products', [ProductController::class, 'bulkDestroy'])->name('products.bulkDestroy');
         //Route Suppliers
         Route::resource('suppliers', SupplierController::class);
         // Rute untuk Stok Masuk
@@ -113,6 +148,8 @@ Route::middleware(['auth', 'verified', 'is-admin'])->group(function () {
 
     // export excel
     Route::get('/reports/sales/export-excel', [ReportController::class, 'exportSalesExcel'])->name('reports.sales.exportExcel');
+
+    Route::resource('users', UserController::class);
 });
 
 Route::get('/api/products/{product}/available-imeis', function (Product $product) {

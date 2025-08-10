@@ -60,7 +60,7 @@ class DummyDataSeeder extends Seeder
 
             if ($itemToSell) {
                 // Tentukan tanggal penjualan acak dalam 7 hari terakhir
-                $saleDate = fake()->dateTimeBetween('-7 days', 'now');
+                $saleDate = fake()->dateTimeBetween('-30 days', 'now');
 
                 // Buat data penjualan
                 $sale = Sale::create([

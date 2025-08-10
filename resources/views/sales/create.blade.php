@@ -79,42 +79,55 @@
     </div>
 
     <script>
-        document.getElementById('product_id').addEventListener('change', function() {
-            const productId = this.value;
-            const imeiSelect = document.getElementById('imei');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi Select2 pada dropdown IMEI saat halaman dimuat
+            const imeiSelect = $('#imei').select2({
+                placeholder: "-- Pilih Produk Terlebih Dahulu --",
+            });
+
+            // Ambil elemen lain yang dibutuhkan
+            const productSelectEl = document.getElementById('product_id');
             const priceInput = document.getElementById('selling_price');
 
-            // Ambil harga dari atribut data-price
-            const selectedOption = this.options[this.selectedIndex];
-            const price = selectedOption.dataset.price;
-            priceInput.value = price; // <-- Atur nilai input harga
+            // Event listener saat produk diubah
+            productSelectEl.addEventListener('change', function() {
+                const productId = this.value;
 
-            // Kosongkan pilihan IMEI dan tampilkan pesan loading
-            imeiSelect.innerHTML = '<option value="">Memuat IMEI...</option>';
+                const selectedOption = this.options[this.selectedIndex];
+                const price = selectedOption.dataset.price;
+                priceInput.value = price;
 
-            if (productId) {
-                const productSelect = document.getElementById('product_id');
-                const baseUrl = productSelect.dataset.imeiUrl; // <-- Ambil URL dasar dari atribut data-*
-                fetch(`${baseUrl}/${productId}/available-imeis`) // <-- Gunakan URL yang sudah benar
-                    .then(response => response.json())
-                    .then(data => {
-                        imeiSelect.innerHTML = '<option value="">Pilih IMEI</option>'; // Reset
-                        if (data.length > 0) {
-                            data.forEach(imei => {
-                                const option = document.createElement('option');
-                                option.value = imei;
-                                option.textContent = imei;
-                                imeiSelect.appendChild(option);
-                            });
-                        } else {
-                            imeiSelect.innerHTML =
-                                '<option value="">-- Stok IMEI untuk produk ini habis --</option>';
-                        }
-                    });
-            } else {
-                imeiSelect.innerHTML = '<option value="">-- Pilih Produk Terlebih Dahulu --</option>';
-                priceInput.value = ''; // <-- Kosongkan harga jika tidak ada produk dipilih
-            }
+                // Reset dan tampilkan pesan loading di Select2
+                imeiSelect.empty().append('<option value="">Memuat IMEI...</option>').trigger('change');
+
+                if (productId) {
+                    const baseUrl = productSelectEl.dataset.imeiUrl;
+
+                    fetch(`${baseUrl}/${productId}/available-imeis`)
+                        .then(response => response.json())
+                        .then(data => {
+                            imeiSelect.empty(); // Kosongkan pilihan
+                            if (data.length > 0) {
+                                imeiSelect.append('<option value="">Pilih IMEI</option>').trigger(
+                                    'change');
+                                data.forEach(imei => {
+                                    // Tambahkan setiap IMEI sebagai option baru
+                                    const option = new Option(imei, imei, false, false);
+                                    imeiSelect.append(option).trigger('change');
+                                });
+                            } else {
+                                imeiSelect.append(
+                                    '<option value="">-- Stok IMEI untuk produk ini habis --</option>'
+                                    ).trigger('change');
+                            }
+                        });
+                } else {
+                    imeiSelect.empty().append(
+                        '<option value="">-- Pilih Produk Terlebih Dahulu --</option>').trigger(
+                        'change');
+                    priceInput.value = '';
+                }
+            });
         });
     </script>
 </x-app-layout>

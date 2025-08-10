@@ -75,6 +75,28 @@
             {{-- ===== WADAH UNTUK GRAFIK BARU DIMULAI DI SINI ===== --}}
             <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    {{-- ===== TOMBOL FILTER BARU DIMULAI DI SINI ===== --}}
+                    <div class="mb-4 flex items-center space-x-2">
+                        @php
+                            // Ambil nilai 'range' dari URL. Jika tidak ada, anggap nilainya adalah 7 (default).
+                            $currentRange = request('range', 7);
+                        @endphp
+
+                        <a href="{{ route('dashboard', ['range' => 7]) }}"
+                            class="px-3 py-1 text-sm font-semibold rounded-md transition {{ $currentRange == 7 ? 'bg-indigo-600 text-white shadow' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                            7 Hari Terakhir
+                        </a>
+                        <a href="{{ route('dashboard', ['range' => 30]) }}"
+                            class="px-3 py-1 text-sm font-semibold rounded-md transition {{ $currentRange == 30 ? 'bg-indigo-600 text-white shadow' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                            30 Hari Terakhir
+                        </a>
+                        <a href="{{ route('dashboard', ['range' => 365]) }}"
+                            class="px-3 py-1 text-sm font-semibold rounded-md transition {{ $currentRange == 365 ? 'bg-indigo-600 text-white shadow' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                            1 Tahun Terakhir
+                        </a>
+                    </div>
+                    {{-- ===== TOMBOL FILTER SELESAI ===== --}}
+
                     {!! $chart->container() !!}
                 </div>
             </div>

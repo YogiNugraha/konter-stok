@@ -32,111 +32,122 @@
                     </div>
                     {{-- ===== FORM PENCARIAN SELESAI ===== --}}
 
-                    <a href="{{ route('products.create') }}"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        + Tambah Produk
-                    </a>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full leading-normal mt-4">
-                            <thead>
-                                <tr>
-                                    <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        No
-                                    </th>
-                                    <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Nama Produk
-                                    </th>
-                                    <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Model
-                                    </th>
-                                    <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Kapasitas
-                                    </th>
-                                    <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Warna
-                                    </th>
-                                    <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Harga Jual
-                                    </th>
-                                    <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Stok
-                                    </th>
-                                    <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Aksi
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($products as $product)
-                                    <tr>
-                                        {{-- TAMBAHKAN SEL UNTUK NOMOR DI SINI --}}
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                            <p class="text-gray-900 whitespace-no-wrap">{{ $loop->iteration }}</p>
-                                        </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap">{{ $product->name }}</p>
-                                            <p class="text-gray-600 whitespace-no-wrap">{{ $product->brand }}</p>
-                                        </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap">{{ $product->model }}</p>
-                                        </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap">{{ $product->storage }}</p>
-                                        </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap">{{ $product->color }}</p>
-                                        </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap">Rp
-                                                {{ number_format($product->selling_price, 0, ',', '.') }}</p>
-                                        </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap">{{ $product->stock }}</p>
-                                        </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <div class="flex items-center">
-                                                <a href="{{ route('products.showItems', $product->id) }}"
-                                                    class="text-blue-600 hover:text-blue-900 mr-4">Detail</a>
+                    {{-- ===== FORM UNTUK AKSI MASSAL DIMULAI DI SINI ===== --}}
+                    <form action="{{ route('products.bulkDestroy') }}" method="POST"
+                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus semua produk yang dipilih? Aksi ini tidak dapat dibatalkan.');">
+                        @csrf
+                        @method('DELETE')
 
-                                                {{-- Tombol Edit --}}
-                                                <a href="{{ route('products.edit', $product->id) }}"
-                                                    class="text-indigo-600 hover:text-indigo-900">
-                                                    Edit
-                                                </a>
-
-                                                {{-- Form untuk Tombol Hapus --}}
-                                                <form class="ml-4"
-                                                    action="{{ route('products.destroy', $product->id) }}"
-                                                    method="POST"
-                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900">
-                                                        Hapus
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
+                        <div class="mb-4 flex items-center space-x-4">
+                            <a href="{{ route('products.create') }}"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                + Tambah Produk
+                            </a>
+                            <button type="submit" id="bulk-delete-btn"
+                                class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm disabled:bg-gray-400"
+                                disabled>
+                                Hapus yang Dipilih
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full leading-normal mt-4">
+                                <thead>
                                     <tr>
-                                        <td colspan="8"
-                                            class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                            Data Produk belum Tersedia.
-                                        </td>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs w-1/12">
+                                            <input type="checkbox" id="select-all">
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            No
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Nama Produk
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Model
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Kapasitas
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Warna
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Harga Jual
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Stok
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Aksi
+                                        </th>
                                     </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    @forelse ($products as $product)
+                                        <tr>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <input type="checkbox" name="product_ids[]" value="{{ $product->id }}"
+                                                    class="row-checkbox">
+                                            </td>
+                                            {{-- TAMBAHKAN SEL UNTUK NOMOR DI SINI --}}
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                                <p class="text-gray-900 whitespace-no-wrap">{{ $loop->iteration }}</p>
+                                            </td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <p class="text-gray-900 whitespace-no-wrap">{{ $product->name }}</p>
+                                                <p class="text-gray-600 whitespace-no-wrap">{{ $product->brand }}</p>
+                                            </td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <p class="text-gray-900 whitespace-no-wrap">{{ $product->model }}</p>
+                                            </td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <p class="text-gray-900 whitespace-no-wrap">{{ $product->storage }}</p>
+                                            </td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <p class="text-gray-900 whitespace-no-wrap">{{ $product->color }}</p>
+                                            </td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <p class="text-gray-900 whitespace-no-wrap">Rp
+                                                    {{ number_format($product->selling_price, 0, ',', '.') }}</p>
+                                            </td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <p class="text-gray-900 whitespace-no-wrap">{{ $product->stock }}</p>
+                                            </td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <div class="flex items-center">
+                                                    <a href="{{ route('products.showItems', $product->id) }}"
+                                                        class="text-blue-600 hover:text-blue-900 mr-4">Detail</a>
+
+                                                    {{-- Tombol Edit --}}
+                                                    <a href="{{ route('products.edit', $product->id) }}"
+                                                        class="text-indigo-600 hover:text-indigo-900">
+                                                        Edit
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="9"
+                                                class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                                Data Produk belum Tersedia.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    {{-- ===== FORM SELESAI ===== --}}
                     <div class="mt-4">
                         {{ $products->appends(request()->query())->links() }}
                     </div>
@@ -144,4 +155,34 @@
             </div>
         </div>
     </div>
+
+    {{-- JAVASCRIPT UNTUK CHECKBOX --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAll = document.getElementById('select-all');
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+            const deleteBtn = document.getElementById('bulk-delete-btn');
+
+            function toggleDeleteButton() {
+                const anyChecked = Array.from(rowCheckboxes).some(cb => cb.checked);
+                deleteBtn.disabled = !anyChecked;
+            }
+
+            selectAll.addEventListener('change', function() {
+                rowCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+                toggleDeleteButton();
+            });
+
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (!this.checked) {
+                        selectAll.checked = false;
+                    }
+                    toggleDeleteButton();
+                });
+            });
+        });
+    </script>
 </x-app-layout>

@@ -26,6 +26,10 @@
                             {{ __('Stok Masuk') }}
                         </x-nav-link>
                     @endcan
+                    {{-- Link Penjualan bisa diakses semua role, jadi biarkan di luar --}}
+                    <x-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
+                        {{ __('Penjualan / POS') }}
+                    </x-nav-link>
                     {{-- BUNGKUS MENU ADMIN DENGAN @can --}}
                     @can('is-admin')
                         <x-nav-link :href="route('reports.sales')" :active="request()->routeIs('reports.sales')">
@@ -34,11 +38,11 @@
                         <x-nav-link :href="route('reports.profit')" :active="request()->routeIs('reports.profit')">
                             {{ __('Laporan Laba/Rugi') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                            {{ __('Kelola Kasir') }}
+                        </x-nav-link>
                     @endcan
-                    {{-- Link Penjualan bisa diakses semua role, jadi biarkan di luar --}}
-                    <x-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
-                        {{ __('Penjualan / POS') }}
-                    </x-nav-link>
+
 
                 </div>
             </div>
@@ -114,6 +118,10 @@
                     {{ __('Stok Masuk') }}
                 </x-responsive-nav-link>
             @endcan
+            {{-- Link Penjualan bisa diakses semua role, jadi biarkan di luar --}}
+            <x-responsive-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
+                {{ __('Penjualan / POS') }}
+            </x-responsive-nav-link>
             {{-- BUNGKUS MENU ADMIN DENGAN @can --}}
             @can('is-admin')
                 <x-responsive-nav-link :href="route('reports.sales')" :active="request()->routeIs('reports.sales')">
@@ -122,11 +130,11 @@
                 <x-responsive-nav-link :href="route('reports.profit')" :active="request()->routeIs('reports.profit')">
                     {{ __('Laporan Laba/Rugi') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                    {{ __('Kelola Kasir') }}
+                </x-responsive-nav-link>
             @endcan
-            {{-- Link Penjualan bisa diakses semua role, jadi biarkan di luar --}}
-            <x-responsive-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
-                {{ __('Penjualan / POS') }}
-            </x-responsive-nav-link>
+
         </div>
 
         <!-- Responsive Settings Options -->

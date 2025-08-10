@@ -107,6 +107,22 @@ class ProductController extends Controller
             ->with('success', 'Produk berhasil diperbarui!');
     }
 
+    public function bulkDestroy(Request $request)
+    {
+        // 1. Validasi: pastikan product_ids yang dikirim adalah array dan tidak kosong
+        $request->validate([
+            'product_ids' => 'required|array|min:1',
+            'product_ids.*' => 'exists:products,id', // Pastikan setiap ID ada di tabel products
+        ]);
+
+        // 2. Hapus semua produk yang ID-nya ada di dalam array
+        Product::destroy($request->product_ids);
+
+        // 3. Redirect kembali dengan pesan sukses
+        return redirect()->route('products.index')
+            ->with('success', count($request->product_ids) . ' data produk berhasil dihapus.');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
