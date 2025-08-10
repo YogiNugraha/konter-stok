@@ -1,6 +1,6 @@
 # Sistem Inventaris Konter HP (Konter +62)
 
-![Screenshot Dashboard Konter +62](https://imgur.com/a/md7HMvL)
+![Screenshot Dashboard Konter +62](https://i.imgur.com/md7HMvL.png)
 
 ## 📄 Tentang Proyek
 
