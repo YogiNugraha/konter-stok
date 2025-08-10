@@ -1,66 +1,152 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Inventaris Konter HP (Konter +62)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Screenshot Dashboard Konter +62](https://imgur.com/a/md7HMvL)
 
-## About Laravel
+## 📄 Tentang Proyek
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Sistem Inventaris Konter +62** adalah aplikasi web lengkap yang dibangun menggunakan Laravel 11 untuk mengelola seluruh alur kerja di sebuah konter handphone. Aplikasi ini dirancang untuk mengatasi tantangan spesifik dalam bisnis retail HP, seperti pelacakan unit individual berdasarkan IMEI dan penanganan harga beli/jual yang dinamis.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Proyek ini mencakup fungsionalitas dari backend yang kompleks (manajemen data, transaksi, otorisasi) hingga frontend yang interaktif dan responsif (dashboard, laporan, pencarian).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## ✨ Fitur Utama
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Aplikasi ini dilengkapi dengan serangkaian fitur profesional untuk mendukung operasional bisnis:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+#### **Manajemen Inventaris Lanjutan**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **Dua Tipe Produk:** Mendukung produk **Serialisasi** (dilacak per-IMEI seperti smartphone) dan produk **Kuantitas** (seperti aksesoris, kartu perdana).
+-   **Stok Masuk Dinamis:** Mencatat barang masuk beserta harga modal aktual per-unit/batch.
+-   **Pelacakan per-IMEI:** Setiap unit smartphone memiliki catatan tersendiri, lengkap dengan riwayat harga beli dan statusnya (`in_stock`, `sold`).
+-   **Detail Stok:** Halaman khusus untuk melihat daftar lengkap IMEI yang tersedia untuk setiap tipe produk.
 
-## Laravel Sponsors
+#### **Manajemen Penjualan & Transaksi**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   **Point of Sale (POS) Sederhana:** Antarmuka kasir yang mudah digunakan untuk memproses penjualan.
+-   **Harga Jual Dinamis:** Kasir dapat menyesuaikan harga jual saat transaksi untuk mengakomodasi diskon atau negosiasi.
+-   **Scan Barcode/QR Code:** Mempercepat proses input stok atau penjualan dengan memindai IMEI menggunakan kamera perangkat.
+-   **Transaksi Pembalikan (Retur):** Sistem retur yang profesional, di mana transaksi tidak dihapus melainkan dibatalkan, menjaga keutuhan data (audit trail) dan mengembalikan stok secara otomatis.
 
-### Premium Partners
+#### **Analisis & Pelaporan**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   **Dashboard Interaktif:** Menampilkan ringkasan data real-time seperti pendapatan harian, jumlah transaksi, dan total stok.
+-   **Grafik Penjualan Dinamis:** Grafik garis yang menampilkan tren pendapatan dengan filter rentang waktu (7 hari, 30 hari, 1 tahun).
+-   **Laporan Penjualan & Laba/Rugi:** Laporan detail yang dapat difilter berdasarkan tanggal untuk menganalisis performa bisnis.
+-   **Ekspor Data:** Mengekspor data laporan ke format **Excel** dan **PDF** untuk keperluan akuntansi atau pengarsipan.
 
-## Contributing
+#### **Manajemen Pengguna & Akses**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   **Sistem Peran (Roles):** Hak akses terpisah untuk **Admin** (akses penuh) dan **Kasir** (akses terbatas).
+-   **Pengelolaan Pengguna:** Admin dapat menambah, mengubah, dan menghapus akun pengguna lain melalui antarmuka khusus.
 
-## Code of Conduct
+#### **Pengalaman Pengguna (UX)**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+-   **Pencarian & Paginasi:** Fitur pencarian dan paginasi di semua tabel data utama untuk memudahkan navigasi.
+-   **Desain Responsif:** Tampilan yang menyesuaikan dengan baik di perangkat desktop maupun mobile.
+-   **Dropdown dengan Pencarian:** Memudahkan pemilihan IMEI saat penjualan jika stok sangat banyak.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🚀 Teknologi yang Digunakan
 
-## License
+-   **Backend:** PHP 8.3, Laravel 11
+-   **Frontend:** Blade, Tailwind CSS, Alpine.js
+-   **Database:** MySQL / MariaDB
+-   **Paket Utama:**
+    -   `laravel/breeze` - untuk sistem autentikasi.
+    -   `maatwebsite/excel` - untuk ekspor ke Excel.
+    -   `barryvdh/laravel-dompdf` - untuk ekspor ke PDF.
+    -   `arielmejiadev/larapex-charts` - untuk membuat grafik di dashboard.
+-   **Library Frontend:**
+    -   `html5-qrcode` - untuk fungsionalitas scan barcode.
+    -   `Select2` - untuk dropdown dengan fitur pencarian.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🛠️ Panduan Instalasi Lokal
+
+Untuk menjalankan proyek ini di lingkungan pengembangan lokal, ikuti langkah-langkah berikut:
+
+1.  **Clone repository ini:**
+
+    ```bash
+    git clone [URL_REPOSITORY_ANDA]
+    ```
+
+2.  **Masuk ke direktori proyek:**
+
+    ```bash
+    cd nama-proyek
+    ```
+
+3.  **Install dependensi Composer:**
+
+    ```bash
+    composer install
+    ```
+
+4.  **Salin file environment:**
+
+    ```bash
+    cp .env.example .env
+    ```
+
+5.  **Generate application key:**
+
+    ```bash
+    php artisan key:generate
+    ```
+
+6.  **Konfigurasi file `.env`:**
+
+    -   Atur koneksi database Anda (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`).
+    -   Pastikan `APP_URL` sudah benar.
+
+7.  **Jalankan migrasi database:**
+
+    ```bash
+    php artisan migrate
+    ```
+
+8.  **(Opsional) Isi database dengan data awal:**
+    Jalankan seeder untuk membuat akun admin default.
+
+    ```bash
+    php artisan db:seed --class=UserSeeder
+    ```
+
+9.  **Install dependensi NPM:**
+
+    ```bash
+    npm install
+    ```
+
+10. **Compile aset frontend:**
+
+    ```bash
+    npm run dev
+    ```
+
+11. **Jalankan server pengembangan:**
+    ```bash
+    php artisan serve
+    ```
+    Aplikasi sekarang berjalan di `http://127.0.0.1:8000`.
+
+---
+
+## 👨‍💻 Cara Menggunakan
+
+Setelah instalasi dan seeding, Anda bisa login menggunakan akun default:
+
+-   **Email:** `admin@konter.com`
+-   **Password:** `password`
+
+_(Sangat disarankan untuk segera mengganti password setelah login pertama kali melalui menu Profil)._
+
+---
+
+## 📄 Lisensi
+
+Proyek ini dilisensikan di bawah [MIT License](LICENSE.md).
