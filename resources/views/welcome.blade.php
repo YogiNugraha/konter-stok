@@ -30,7 +30,7 @@
 
                     @if (Route::has('register'))
                         <a href="{{ route('register') }}"
-                            class="ml-4 font-semibold text-gray-600 hover:text-gray-900 focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
+                            class="ml-4 font-semibold text-gray-600 hover:text-gray-900 focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 hidden">
                             Register
                         </a>
                     @endif
@@ -57,7 +57,7 @@
                         class="rounded-md bg-[#00aeef] px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#009cd7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00aeef]">
                         Mulai Kelola Stok
                     </a>
-                    <a href="{{ route('register') }}" class="text-sm font-semibold leading-6 text-gray-900">
+                    <a href="{{ route('register') }}" class="text-sm font-semibold leading-6 text-gray-900 hidden">
                         Daftar Akun <span aria-hidden="true">→</span>
                     </a>
                 </div>

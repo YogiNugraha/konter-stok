@@ -39,7 +39,7 @@ class DummyDataSeeder extends Seeder
         // 3. Isi stok (ProductItems) untuk setiap produk
         $allProductItems = collect();
         foreach ($products as $product) {
-            $stockCount = rand(50, 200); // Setiap produk akan punya 50-200 unit
+            $stockCount = rand(10, 50); // Setiap produk akan punya 50-200 unit
             for ($i = 0; $i < $stockCount; $i++) {
                 $item = ProductItem::create([
                     'product_id' => $product->id,
@@ -54,7 +54,7 @@ class DummyDataSeeder extends Seeder
         }
 
         // 4. Buat 200 transaksi penjualan acak dalam 7 hari terakhir
-        for ($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             // Ambil satu item acak yang masih tersedia
             $itemToSell = $allProductItems->where('status', 'in_stock')->random();
 

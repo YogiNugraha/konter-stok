@@ -33,11 +33,6 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
                                 <option value="">Pilih Produk</option>
                                 @foreach ($products as $product)
-                                    {{-- <option value="{{ $product->id }}"
-                                        {{ old('product_id') == $product->id ? 'selected' : '' }}>
-                                        {{ $product->name }} (Stok: {{ $product->stock }}) - Rp
-                                        {{ number_format($product->selling_price) }}
-                                    </option> --}}
                                     {{-- Tambahkan atribut data-price di dalam tag option --}}
                                     <option value="{{ $product->id }}" data-price="{{ $product->selling_price }}"
                                         {{ old('product_id') == $product->id ? 'selected' : '' }}>

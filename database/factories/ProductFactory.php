@@ -17,14 +17,14 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $purchasePrice = $this->faker->numberBetween(1000000, 10000000);
-        $sellingPrice = $purchasePrice + $this->faker->numberBetween(200000, 1000000);
+        $sellingPrice = $purchasePrice + $this->faker->numberBetween(200000, 1500000);
 
         return [
-            'name' => $this->faker->randomElement(['Samsung Galaxy', 'Realme', 'Infinix Note', 'Xiaomi Redmi']) . ' ' . $this->faker->numerify('##') . ' ' . $this->faker->randomElement(['Pro', 'Max', 'Lite', 'Ultra']),
+            'name' => $this->faker->randomElement(['Samsung Galaxy', 'Realme', 'Infinix Note', 'Xiaomi Redmi']) . ' ' . $this->faker->numerify('##') . ' ' . $this->faker->randomElement(['Pro', 'Max', 'Lite']),
             'brand' => $this->faker->randomElement(['Samsung', 'Xiaomi', 'Realme', 'Infinix']),
             'purchase_price' => $purchasePrice,
             'selling_price' => $sellingPrice,
-            'stock' => 0, // Kita mulai dengan stok 0, akan diisi oleh seeder
+            'stock' => 0, // Stok awal kita set 0, nanti diisi oleh seeder
         ];
     }
 }
