@@ -1,4 +1,4 @@
-# Sistem Inventaris Konter HP (Konter +62)
+# Sistem Informasi Inventory Barang (Konter +62)
 
 ![Screenshot Dashboard Konter +62](https://i.imgur.com/a/md7HMvL.png)
 
